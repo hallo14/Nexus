@@ -1,0 +1,4 @@
+#ifndef PROJECTMANAGER_H
+#define PROJECTMANAGER_H
+
+#endif // PROJECTMANAGER_H
