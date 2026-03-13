@@ -1,4 +1,3 @@
-# This creates a module that the main app can 'import' and 'link' to
 
 qt_add_qml_module(ProjectManager
     URI Modules.ProjectManager

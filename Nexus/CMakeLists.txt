@@ -9,6 +9,7 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 qt_standard_project_setup(REQUIRES 6.8)
 
 add_subdirectory(Modules/ProjectManager)
+add_subdirectory(Modules/Vault)
 
 qt_add_executable(appNexus
     main.cpp
@@ -41,6 +42,6 @@ install(TARGETS appNexus
 target_link_libraries(appNexus
     PRIVATE
         Qt6::Quick
-        ProjectManager # Add this here
+        ProjectManager
+        Vault
 )
-
