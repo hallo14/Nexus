@@ -7,6 +7,8 @@ qt_add_qml_module(ProjectManager
     githubcontroller.h
     QML_FILES
         ProjectManager.qml
+        QML_FILES TopBar.qml
+        QML_FILES RepoView.qml
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Gui Network)

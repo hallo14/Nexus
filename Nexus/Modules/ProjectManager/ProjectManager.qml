@@ -19,49 +19,40 @@ Item {
         anchors.fill: parent
         color: "orange"
 
-        RowLayout {
+        ColumnLayout {
 
             anchors.fill: parent
 
-            ColumnLayout {
+            TopBar {
+
+            }
+
+
+            RowLayout {
 
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+
+
+                RepoView {
+                    backend: backend
+                }
 
 
 
                 Rectangle {
-                    id: projectlist
-
                     Layout.fillHeight: true
-                    Layout.preferredWidth: root.width * 0.3
+                    Layout.fillWidth: true
                     Layout.margins: 10
 
                     color: "#999"
 
-                    ListView {
-                        anchors.fill: parent
-
-                        model: backend.repoList
-
-                        delegate: ItemDelegate {
-                            width: projectlist.width
-                            text: modelData.name
-                        }
-                    }
+                    border.color: "#555"
+                    border.width: 1
                 }
+
             }
-
-            Rectangle {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.margins: 10
-
-                color: "#999"
-            }
-
         }
-
     }
 
 }
