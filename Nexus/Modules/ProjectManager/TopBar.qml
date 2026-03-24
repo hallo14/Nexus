@@ -18,23 +18,25 @@ Rectangle {
 
 
     Button {
+        id: login
+
         anchors.right: topbar.right
         anchors.verticalCenter: topbar.verticalCenter
 
         height: topbar.height
-        width: topbar.height
+        width: topbar.height * 2
 
         contentItem: Text {
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
             text: 'Sign in'
             color: 'black'
         }
 
 
         background: Rectangle {
-
-
             color: '#444'
-
         }
     }
 

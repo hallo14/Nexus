@@ -22,6 +22,10 @@ Window {
             Layout.preferredHeight: 40
             spacing: 1
 
+            background: Rectangle {
+                color: 'black'
+            }
+
             TabButton {
                 id: projectManagerTab
                 implicitHeight: parent.height

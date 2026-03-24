@@ -22,8 +22,16 @@ Rectangle {
         model: backend.repoList
 
         delegate: ItemDelegate {
+            id: repo
             width: projectlist.width
             text: modelData.name
+
+            background: Rectangle {
+                color: repo.down ? '#444' : '#666'
+                border.color: '#444'
+                border.width: 1
+
+            }
         }
     }
 }
