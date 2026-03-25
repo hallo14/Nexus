@@ -8,7 +8,7 @@
 
 GithubController::GithubController(QObject* parent) : QObject(parent) {
     m_manager = new QNetworkAccessManager(this);
-    connect(m_manager, &QNetworkAccessManager::finished, this, &GithubController::onFetchFinished);
+    connect(m_manager, &QNetworkAccessManager::finished, this, &GithubController::onFinished);
 }
 
 QVariantList GithubController::repoList() {
@@ -23,13 +23,38 @@ void GithubController::fetchRepos() {
 
     request.setHeader(QNetworkRequest::UserAgentHeader, "nexus");
 
-    m_manager->get(request);
+    m_manager->get(request)->setProperty("requestID", "fetchRepos");
 
 }
-void GithubController::onFetchFinished(QNetworkReply* reply) {
+
+void GithubController::requestCode() {
+
+    QUrl url = QUrl("https://github.com/login/device/code");
+
+    QNetworkRequest request(url);
+
+    request.setRawHeader("Accept", "application/json");
 
 
-    if (reply->error() == QNetworkReply::NoError) {
+    QJsonObject json;
+
+    json["client_id"] = "Ov23li3vfajx3pVXpdXn";
+    json["scope"] = "repo";
+
+    QJsonDocument doc(json);
+    QByteArray data = doc.toJson();
+
+    m_manager->post(request, data)->setProperty("requestID", "requestCode");
+}
+
+void GithubController::onFinished(QNetworkReply* reply) {
+
+    if (reply->error() != QNetworkReply::NoError) {
+        reply->deleteLater();
+        return;
+    }
+
+    if (reply->property("requestID") == "fetchRepos") {
         QByteArray response = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(response);
         QJsonArray array = doc.array();
@@ -43,6 +68,16 @@ void GithubController::onFetchFinished(QNetworkReply* reply) {
         }
 
         emit repoListChanged();
+
     }
+    else if (reply->property("requestID") == "requestCode") {
+        QByteArray response = reply->readAll();
+        QJsonDocument doc = QJsonDocument::fromJson(response);
+        QJsonArray array = doc.array();
+
+        QDebug(array[])
+    }
+
+
     reply->deleteLater();
 }

@@ -32,11 +32,12 @@ public:
 
     QVariantList repoList();
     Q_INVOKABLE void fetchRepos();
+    void requestCode();
 
 
 signals:
     void repoListChanged();
 
 private slots:
-    void onFetchFinished(QNetworkReply* reply);
+    void onFinished(QNetworkReply* reply);
 };
