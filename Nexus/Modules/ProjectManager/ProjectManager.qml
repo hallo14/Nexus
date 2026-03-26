@@ -24,9 +24,8 @@ Item {
             anchors.fill: parent
 
             TopBar {
-
+                backend: backend
             }
-
 
             RowLayout {
 

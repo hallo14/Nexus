@@ -7,6 +7,8 @@ Rectangle {
 
     id: topbar
 
+    property var backend
+
     Layout.fillWidth: true
     Layout.preferredHeight: 40
     Layout.margins: 10
@@ -38,7 +40,37 @@ Rectangle {
         background: Rectangle {
             color: '#444'
         }
+
+        onClicked: {
+            backend.requestCode();
+            authPopup.open();
+        }
     }
 
+    Popup {
+        id: authPopup
+        anchors.centerIn: parent
+        width: 300
+        height: 200
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
+        Column {
+            anchors.centerIn: parent
+            spacing: 10
+            Text { text: "Enter this code on GitHub:" }
+            Text {
+                text: backend.userCode
+                font.bold: true
+                font.pointSize: 20
+            }
+            Button {
+                text: "Copy and Close"
+                onClicked: {
+                    authPopup.close();
+                    backend.copyToClipboard(backend.userCode);
+                    Qt.openUrlExternally(backend.verificationURI);
+                }
+            }
+        }
+    }
 }

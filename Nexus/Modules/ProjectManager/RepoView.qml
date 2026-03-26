@@ -16,21 +16,51 @@ Rectangle {
     border.color: "#555"
     border.width: 1
 
-    ListView {
+    ColumnLayout {
         anchors.fill: parent
+        spacing: 0
 
-        model: backend.repoList
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.maximumHeight: 30
+            spacing: 0
 
-        delegate: ItemDelegate {
-            id: repo
-            width: projectlist.width
-            text: modelData.name
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
-            background: Rectangle {
-                color: repo.down ? '#444' : '#666'
-                border.color: '#444'
-                border.width: 1
+                color: "green"
 
+                Button {
+                    anchors.right: parent.right
+                    height: parent.height
+                    width: parent.height
+
+                    onClicked: {
+                        backend.fetchRepos()
+                    }
+                }
+            }
+
+        }
+
+        ListView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            model: backend.repoList
+
+            delegate: ItemDelegate {
+                id: repo
+                width: projectlist.width
+                text: modelData.name
+
+                background: Rectangle {
+                    color: repo.down ? '#444' : '#666'
+                    border.color: '#444'
+                    border.width: 1
+
+                }
             }
         }
     }
