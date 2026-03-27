@@ -19,58 +19,43 @@ Rectangle {
     border.width: 1
 
 
-    Button {
+    Rectangle {
         id: login
 
         anchors.right: topbar.right
         anchors.verticalCenter: topbar.verticalCenter
+        anchors.rightMargin: 5
 
-        height: topbar.height
-        width: topbar.height * 2
+        implicitHeight: topbar.height - 10
+        implicitWidth: topbar.height * 2 - 10
 
-        contentItem: Text {
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+        radius: 4
+
+        border.color: "black"
+        border.width: 0.5
+
+        color: tapHandler.pressed ? '#00CCCC' : hoverHandler.hovered ? '#00DDDD' : '#00FFFF'
+
+        Text {
+            anchors.centerIn: parent
 
             text: 'Sign in'
             color: 'black'
         }
 
+        TapHandler {
+            id: tapHandler
 
-        background: Rectangle {
-            color: '#444'
+            onTapped: {
+                backend.requestCode()
+                showPopup("Popups/LoginPopup.qml", { "backend": backend })
+            }
         }
 
-        onClicked: {
-            backend.requestCode();
-            authPopup.open();
+        HoverHandler {
+            id: hoverHandler
         }
     }
 
-    Popup {
-        id: authPopup
-        anchors.centerIn: parent
-        width: 300
-        height: 200
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
-        Column {
-            anchors.centerIn: parent
-            spacing: 10
-            Text { text: "Enter this code on GitHub:" }
-            Text {
-                text: backend.userCode
-                font.bold: true
-                font.pointSize: 20
-            }
-            Button {
-                text: "Copy and Close"
-                onClicked: {
-                    authPopup.close();
-                    backend.copyToClipboard(backend.userCode);
-                    Qt.openUrlExternally(backend.verificationURI);
-                }
-            }
-        }
-    }
 }

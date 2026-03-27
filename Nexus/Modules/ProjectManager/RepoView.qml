@@ -29,7 +29,10 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                color: "green"
+                color: "#666"
+
+                border.color: "#555"
+                border.width: 1
 
                 Button {
                     anchors.right: parent.right

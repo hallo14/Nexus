@@ -15,6 +15,12 @@ Item {
         Component.onCompleted: backend.fetchRepos()
     }
 
+    Loader {
+        id: popupLoader
+        anchors.fill: parent
+        active: false
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "orange"
@@ -54,4 +60,8 @@ Item {
         }
     }
 
+    function showPopup(sourceFile, properties) {
+        popupLoader.active = true
+        popupLoader.setSource(sourceFile, properties)
+    }
 }

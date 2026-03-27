@@ -9,6 +9,7 @@ qt_add_qml_module(ProjectManager
         ProjectManager.qml
         QML_FILES TopBar.qml
         QML_FILES RepoView.qml
+        QML_FILES Popups/LoginPopup.qml
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Gui Network)
