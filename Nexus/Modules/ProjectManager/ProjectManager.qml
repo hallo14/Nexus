@@ -37,6 +37,7 @@ Item {
 
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                spacing: 0
 
 
                 RepoView {
@@ -44,16 +45,8 @@ Item {
                 }
 
 
-
-                Rectangle {
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    Layout.margins: 10
-
-                    color: "#999"
-
-                    border.color: "#555"
-                    border.width: 1
+                RepoInfoView {
+                    backend: backend
                 }
 
             }

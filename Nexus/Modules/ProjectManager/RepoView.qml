@@ -100,6 +100,8 @@ Rectangle {
 
                     radius: 4
                 }
+
+                onClicked: backend.selectedIndex = model.index
             }
         }
     }

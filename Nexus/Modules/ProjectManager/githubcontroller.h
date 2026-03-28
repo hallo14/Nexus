@@ -7,27 +7,40 @@
 #include <QNetworkAccessManager>
 #include <QtQml/qqmlregistration.h>
 #include <QNetworkReply>
+#include <QMap>
 
 #endif // GITHUBCONTROLLER_H
 
 
-struct GitHubRepo {
+struct GithubRepo {
+    Q_GADGET
+    Q_PROPERTY(QString name MEMBER name);
+    Q_PROPERTY(QString localPath MEMBER localPath);
+    Q_PROPERTY(QVariantMap commands MEMBER commands);
+
+public:
+
     QString name;
     QString localPath;
+    QVariantMap commands;
 };
 
 class GithubController : public QObject {
     Q_OBJECT
     QML_ELEMENT
 
-    Q_PROPERTY(QVariantList repoList READ repoList NOTIFY repoListChanged)
+    Q_PROPERTY(QList<GithubRepo> repoList READ repoList NOTIFY repoListChanged)
     Q_PROPERTY(QString userCode READ userCode NOTIFY userCodeChanged)
     Q_PROPERTY(QString verificationURI READ verificationURI NOTIFY verificationURIChanged)
+    Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged FINAL)
+    Q_PROPERTY(GithubRepo selectedRepo READ selectedRepo NOTIFY selectedRepoChanged FINAL)
 
 private:
     QNetworkAccessManager* m_manager;
 
-    QVariantList m_repoList;
+    QList<GithubRepo> m_repoList;
+    GithubRepo m_selectedRepo;
+    int m_selectedIndex;
 
     QTimer* m_timer;
     QString m_deviceCode;
@@ -40,9 +53,12 @@ public:
 
     explicit GithubController(QObject* parent = nullptr);
 
-    QVariantList repoList();
+    QList<GithubRepo> repoList();
     QString userCode();
     QString verificationURI();
+    GithubRepo selectedRepo();
+    int selectedIndex();
+    void setSelectedIndex(int idx);
 
     Q_INVOKABLE void fetchRepos();
     Q_INVOKABLE void requestCode();
@@ -57,6 +73,8 @@ signals:
     void repoListChanged();
     void userCodeChanged();
     void verificationURIChanged();
+    void selectedRepoChanged();
+    void selectedIndexChanged();
 
 private slots:
     void onFinished(QNetworkReply* reply);

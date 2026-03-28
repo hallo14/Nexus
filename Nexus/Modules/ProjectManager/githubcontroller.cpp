@@ -15,7 +15,7 @@ GithubController::GithubController(QObject* parent) : QObject(parent) {
     connect(m_manager, &QNetworkAccessManager::finished, this, &GithubController::onFinished);
 }
 
-QVariantList GithubController::repoList() {
+QList<GithubRepo> GithubController::repoList() {
     return m_repoList;
 }
 QString GithubController::userCode() {
@@ -23,6 +23,19 @@ QString GithubController::userCode() {
 }
 QString GithubController::verificationURI() {
     return m_verificationURI;
+}
+GithubRepo GithubController::selectedRepo() {
+    return m_selectedRepo;
+}
+int GithubController::selectedIndex() {
+    return m_selectedIndex;
+}
+void GithubController::setSelectedIndex(int idx) {
+    m_selectedIndex = idx;
+    m_selectedRepo = m_repoList[idx];
+
+    selectedIndexChanged();
+    selectedRepoChanged();
 }
 void GithubController::copyToClipboard(QString text) {
     QGuiApplication::clipboard()->setText(text);
@@ -61,13 +74,15 @@ void GithubController::addLocalRepo(QString urlString) {
 
     QString repoName = line.section('/', -1);
 
-    QVariantMap repo;
-    repo["name"] = repoName;
-    repo["localPath"] = path;
+    GithubRepo repo;
+    repo.name = repoName;
+    repo.localPath = path;
+    repo.commands["push"] = "git push";
 
-    m_repoList.push_back(repo);
+    m_repoList.append(repo);
 
-    repoListChanged();
+    emit repoListChanged();
+    emit selectedRepoChanged();
 }
 
 void GithubController::fetchRepos() {
@@ -136,25 +151,7 @@ void GithubController::onFinished(QNetworkReply* reply) {
         return;
     }
 
-    if (reply->property("requestID") == "fetchRepos") {
-        m_repoList.clear();
-
-        QByteArray response = reply->readAll();
-        QJsonDocument doc = QJsonDocument::fromJson(response);
-        QJsonArray array = doc.array();
-
-        for (const QJsonValue& value : array) {
-            QVariantMap repo;
-            QJsonObject obj = value.toObject();
-            repo["name"] = obj["name"].toString();
-            m_repoList.append(repo);
-
-        }
-
-        emit repoListChanged();
-
-    }
-    else if (reply->property("requestID") == "requestCode") {
+    if (reply->property("requestID") == "requestCode") {
         QByteArray response = reply->readAll();
         QJsonDocument doc = QJsonDocument::fromJson(response);
         QJsonObject obj = doc.object();
