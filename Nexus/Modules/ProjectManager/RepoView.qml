@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtQuick.Dialogs
 
 Rectangle {
     id: projectlist
@@ -35,6 +36,29 @@ Rectangle {
                 border.width: 1
 
                 Button {
+                    height: parent.height
+
+                    contentItem: Text {
+                        verticalAlignment: Text.AlignVCenter
+                        text: "add Repo"
+                        color: "black"
+
+                    }
+
+                    onClicked: {
+                        folderDialog.open()
+                    }
+
+                    FolderDialog {
+                        id: folderDialog
+
+                        onAccepted: {
+                            backend.addLocalRepo(folderDialog.selectedFolder)
+                        }
+                    }
+                }
+
+                Button {
                     anchors.right: parent.right
                     height: parent.height
                     width: parent.height
@@ -56,13 +80,25 @@ Rectangle {
             delegate: ItemDelegate {
                 id: repo
                 width: projectlist.width
-                text: modelData.name
+
+                contentItem: Text {
+                    text: modelData.name
+                    color: "black"
+
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+
+                }
 
                 background: Rectangle {
-                    color: repo.down ? '#444' : '#666'
+                    color: repo.down ? '#CCC' : '#EEE'
                     border.color: '#444'
                     border.width: 1
 
+                    anchors.fill: parent
+                    anchors.margins: 3
+
+                    radius: 4
                 }
             }
         }

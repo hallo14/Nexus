@@ -13,6 +13,7 @@
 
 struct GitHubRepo {
     QString name;
+    QString localPath;
 };
 
 class GithubController : public QObject {
@@ -46,6 +47,8 @@ public:
     Q_INVOKABLE void fetchRepos();
     Q_INVOKABLE void requestCode();
     void fetchAccessToken();
+
+    Q_INVOKABLE void addLocalRepo(QString start);
 
     Q_INVOKABLE void copyToClipboard(QString text);
 

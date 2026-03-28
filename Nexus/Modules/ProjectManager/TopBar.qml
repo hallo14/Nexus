@@ -56,6 +56,4 @@ Rectangle {
             id: hoverHandler
         }
     }
-
-
 }

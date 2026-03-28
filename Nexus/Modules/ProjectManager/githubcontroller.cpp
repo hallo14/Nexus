@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QDir>
 
 
 GithubController::GithubController(QObject* parent) : QObject(parent) {
@@ -25,6 +26,48 @@ QString GithubController::verificationURI() {
 }
 void GithubController::copyToClipboard(QString text) {
     QGuiApplication::clipboard()->setText(text);
+}
+void GithubController::addLocalRepo(QString urlString) {
+    QUrl url(urlString);
+
+    QString path = url.toLocalFile();
+
+    QDir dir(path);
+    if (!dir.exists(".git")) return;
+
+    dir.cd(".git");
+
+    QFile file(QString(dir.filePath("config")));
+
+    QString content;
+    if (!file.open(QIODevice::ReadOnly)) return;
+
+    QTextStream in(&file);
+    QString line;
+    while (!in.atEnd()) {
+        line = in.readLine().trimmed();
+
+        if (line.startsWith("url = ")) break;
+    }
+    file.close();
+
+    line = line.section('=', 1).trimmed();
+
+
+    if (line.endsWith(".git")) {
+        line.chop(4);
+    }
+
+
+    QString repoName = line.section('/', -1);
+
+    QVariantMap repo;
+    repo["name"] = repoName;
+    repo["localPath"] = path;
+
+    m_repoList.push_back(repo);
+
+    repoListChanged();
 }
 
 void GithubController::fetchRepos() {
