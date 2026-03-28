@@ -39,7 +39,6 @@ private:
     QNetworkAccessManager* m_manager;
 
     QList<GithubRepo> m_repoList;
-    GithubRepo m_selectedRepo;
     int m_selectedIndex;
 
     QTimer* m_timer;
@@ -59,10 +58,13 @@ public:
     GithubRepo selectedRepo();
     int selectedIndex();
     void setSelectedIndex(int idx);
+    Q_INVOKABLE void executeCommand(QString command);
 
     Q_INVOKABLE void fetchRepos();
     Q_INVOKABLE void requestCode();
     void fetchAccessToken();
+
+    Q_INVOKABLE void addCommand(QString name, QString command);
 
     Q_INVOKABLE void addLocalRepo(QString start);
 

@@ -37,41 +37,15 @@ ColumnLayout {
                 verticalAlignment: Text.AlignVCenter
             }
 
-            Rectangle {
-                id: addCommand
+            NexusButton {
+                text: "add command"
 
-
-                Layout.fillHeight: true
-                Layout.alignment: Qt.AlignVCenter
-
-                Layout.preferredWidth: addCommandText.contentWidth + 20
-
-                radius: 4
-
-                border.color: "black"
-                border.width: 0.5
-
-                color: tapHandler.pressed ? '#00CCCC' : hoverHandler.hovered ? '#00DDDD' : '#00FFFF'
-
-                Text {
-                    id: addCommandText
-                    anchors.centerIn: parent
-
-                    text: 'add command'
-                    color: 'black'
+                CommandDialog {
+                    id: commandDialog
+                    onAccepted: backend.addCommand(name, command)
                 }
 
-                TapHandler {
-                    id: tapHandler
-
-                    onTapped: {
-
-                    }
-                }
-
-                HoverHandler {
-                    id: hoverHandler
-                }
+                onClicked: commandDialog.open()
             }
         }
     }

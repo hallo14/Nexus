@@ -8,6 +8,7 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QDir>
+#include <QProcess>
 
 
 GithubController::GithubController(QObject* parent) : QObject(parent) {
@@ -25,17 +26,38 @@ QString GithubController::verificationURI() {
     return m_verificationURI;
 }
 GithubRepo GithubController::selectedRepo() {
-    return m_selectedRepo;
+    if (m_selectedIndex < 0 || m_selectedIndex >= m_repoList.size()) return {};
+    return m_repoList.at(m_selectedIndex);
 }
 int GithubController::selectedIndex() {
     return m_selectedIndex;
 }
 void GithubController::setSelectedIndex(int idx) {
     m_selectedIndex = idx;
-    m_selectedRepo = m_repoList[idx];
 
     selectedIndexChanged();
     selectedRepoChanged();
+}
+void GithubController::addCommand(QString name, QString command) {
+    if (m_selectedIndex < 0 || m_selectedIndex >= m_repoList.size()) return;
+    m_repoList[m_selectedIndex].commands[name] = command;
+    selectedRepoChanged();
+}
+void GithubController::executeCommand(QString command) {
+    if (command.isEmpty()) return;
+
+    QString workingDir = m_repoList[m_selectedIndex].localPath;
+    QString nativePath = QDir::toNativeSeparators(workingDir);
+    QString quotedPath = "\"" + nativePath + "\"";
+
+    command.replace("%ProjectDir%", quotedPath);
+
+    qDebug() << command;
+    QStringList args;
+    args << "/c" << command;
+
+    QProcess::startDetached("cmd.exe", args, nativePath);
+
 }
 void GithubController::copyToClipboard(QString text) {
     QGuiApplication::clipboard()->setText(text);
@@ -77,12 +99,11 @@ void GithubController::addLocalRepo(QString urlString) {
     GithubRepo repo;
     repo.name = repoName;
     repo.localPath = path;
-    repo.commands["push"] = "git push";
 
     m_repoList.append(repo);
 
-    emit repoListChanged();
-    emit selectedRepoChanged();
+    repoListChanged();
+    selectedRepoChanged();
 }
 
 void GithubController::fetchRepos() {

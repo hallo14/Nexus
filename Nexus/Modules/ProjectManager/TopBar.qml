@@ -19,7 +19,7 @@ Rectangle {
     border.width: 1
 
 
-    Rectangle {
+    NexusButton {
         id: login
 
         anchors.right: topbar.right
@@ -29,31 +29,11 @@ Rectangle {
         implicitHeight: topbar.height - 10
         implicitWidth: topbar.height * 2 - 10
 
-        radius: 4
+        text: 'Sign in'
 
-        border.color: "black"
-        border.width: 0.5
-
-        color: tapHandler.pressed ? '#00CCCC' : hoverHandler.hovered ? '#00DDDD' : '#00FFFF'
-
-        Text {
-            anchors.centerIn: parent
-
-            text: 'Sign in'
-            color: 'black'
-        }
-
-        TapHandler {
-            id: tapHandler
-
-            onTapped: {
-                backend.requestCode()
-                showPopup("Popups/LoginPopup.qml", { "backend": backend })
-            }
-        }
-
-        HoverHandler {
-            id: hoverHandler
+        onClicked: {
+            backend.requestCode()
+            showPopup("Popups/LoginPopup.qml", { "backend": backend })
         }
     }
 }

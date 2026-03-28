@@ -12,6 +12,7 @@ Popup {
     anchors.centerIn: Overlay.overlay
     width: 300
     height: 200
+    modal: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
 
     Column {

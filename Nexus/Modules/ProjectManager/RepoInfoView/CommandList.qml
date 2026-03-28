@@ -52,6 +52,21 @@ Rectangle {
 
                 radius: 4
             }
+
+            CommandContextMenu {
+                id: contextMenu
+                y: repoCommand.height
+
+                MenuItem {
+                    text: "execute"
+                    onTriggered: backend.executeCommand(backend.selectedRepo.commands[modelData])
+                }
+                MenuItem {
+                    text: "delete"
+                }
+            }
+
+            onClicked: contextMenu.open()
         }
     }
 }
