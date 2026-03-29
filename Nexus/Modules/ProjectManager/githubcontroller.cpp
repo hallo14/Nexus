@@ -14,6 +14,7 @@
 GithubController::GithubController(QObject* parent) : QObject(parent) {
     m_manager = new QNetworkAccessManager(this);
     connect(m_manager, &QNetworkAccessManager::finished, this, &GithubController::onFinished);
+    getReposFromConfig();
 }
 
 QList<GithubRepo> GithubController::repoList() {
@@ -40,6 +41,7 @@ void GithubController::setSelectedIndex(int idx) {
 }
 void GithubController::addCommand(QString name, QString command) {
     if (m_selectedIndex < 0 || m_selectedIndex >= m_repoList.size()) return;
+    addCommandToConfig(m_repoList[m_selectedIndex].name, name, command);
     m_repoList[m_selectedIndex].commands[name] = command;
     selectedRepoChanged();
 }
@@ -100,10 +102,114 @@ void GithubController::addLocalRepo(QString urlString) {
     repo.name = repoName;
     repo.localPath = path;
 
+    if (!addRepoToConfig(repo)) return;
+
     m_repoList.append(repo);
+
 
     repoListChanged();
     selectedRepoChanged();
+}
+bool GithubController::addRepoToConfig(GithubRepo repo) {
+    QFile file("config/config.json");
+
+    QDir dir("config/");
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+
+    QJsonObject root;
+
+    if (file.exists() && file.open(QIODevice::ReadOnly)) {
+        root = QJsonDocument::fromJson(file.readAll()).object();
+        file.close();
+    }
+
+
+    if (root["repos"].toObject().contains(repo.name)) return false;
+
+    QJsonObject newRepoContent;
+    newRepoContent["path"] = repo.localPath;
+
+    QJsonObject repos;
+    repos = root["repos"].toObject();
+
+    repos[repo.name] = newRepoContent;
+    root["repos"] = repos;
+
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(QJsonDocument(root).toJson());
+        file.close();
+    }
+
+    return true;
+}
+void GithubController::addCommandToConfig(QString repoName, QString commandName, QString command) {
+    QFile file("config/config.json");
+
+    QDir dir("config/");
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+
+    QJsonObject root;
+
+    if (file.exists() && file.open(QIODevice::ReadOnly)) {
+        root = QJsonDocument::fromJson(file.readAll()).object();
+        file.close();
+    }
+
+    QJsonObject repos;
+    repos = root["repos"].toObject();
+
+    QJsonObject repo;
+    repo = repos[repoName].toObject();
+
+    QJsonObject commands;
+    commands = repo["commands"].toObject();
+
+    commands[commandName] = command;
+
+    repo["commands"] = commands;
+    repos[repoName] = repo;
+    root["repos"] = repos;
+
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(QJsonDocument(root).toJson());
+        file.close();
+    }
+}
+void GithubController::getReposFromConfig() {
+    QFile file("config/config.json");
+
+    QJsonObject root;
+
+    if (file.exists() && file.open(QIODevice::ReadOnly)) {
+        root = QJsonDocument::fromJson(file.readAll()).object();
+        file.close();
+    }
+
+
+    QJsonObject repoObject = root["repos"].toObject();
+    QStringList keys = repoObject.keys();
+
+    for (QString key : keys) {
+        GithubRepo repo;
+        repo.name = key;
+
+        QJsonObject repoData = repoObject[key].toObject();
+        repo.localPath = repoData["path"].toString();
+
+        QJsonObject cObject = repoData["commands"].toObject();
+        QStringList cKeys = cObject.keys();
+        for (QString cKey : cKeys) {
+            repo.commands[cKey] = cObject[cKey].toString();
+        }
+
+        m_repoList.append(repo);
+    }
+
+    repoListChanged();
 }
 
 void GithubController::fetchRepos() {

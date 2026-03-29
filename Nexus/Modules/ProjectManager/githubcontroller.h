@@ -59,6 +59,9 @@ public:
     int selectedIndex();
     void setSelectedIndex(int idx);
     Q_INVOKABLE void executeCommand(QString command);
+    bool addRepoToConfig(GithubRepo repo);
+    void addCommandToConfig(QString repoName, QString commandName, QString command);
+    void getReposFromConfig();
 
     Q_INVOKABLE void fetchRepos();
     Q_INVOKABLE void requestCode();

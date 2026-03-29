@@ -14,10 +14,12 @@ Dialog {
 
     ColumnLayout {
 
+        anchors.fill: parent
+
         TextField {
             id: nameInput
             Layout.fillWidth: true
-            placeholderText: "Action Name (e.g. Fetch)"
+            placeholderText: "Action Name"
         }
         TextField {
             id: commandInput
