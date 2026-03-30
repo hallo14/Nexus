@@ -50,9 +50,8 @@ void GithubController::executeCommand(QString command) {
 
     QString workingDir = m_repoList[m_selectedIndex].localPath;
     QString nativePath = QDir::toNativeSeparators(workingDir);
-    QString quotedPath = "\"" + nativePath + "\"";
 
-    command.replace("%ProjectDir%", quotedPath);
+    command.replace("%ProjectDir%", nativePath);
 
     qDebug() << command;
     QStringList args;
