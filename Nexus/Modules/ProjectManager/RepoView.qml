@@ -2,10 +2,10 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Dialogs
+import QtQuick.Effects
 
-Rectangle {
+NexusRectangle {
     id: projectlist
-
     property var backend
 
     Layout.fillHeight: true
@@ -15,6 +15,7 @@ Rectangle {
     color: "#999"
 
     border.color: "#555"
+    shadowColor: "#555"
     border.width: 1
 
     ColumnLayout {

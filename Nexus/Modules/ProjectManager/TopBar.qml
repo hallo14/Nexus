@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 
-Rectangle {
+NexusRectangle {
 
     id: topbar
 
@@ -16,6 +16,7 @@ Rectangle {
 
     color: "#999"
     border.color: "#555"
+    shadowColor: "#555"
     border.width: 1
 
 

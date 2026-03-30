@@ -1,13 +1,14 @@
 import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Effects
 
-Rectangle {
-    id: root
+Item {
 
     property alias text: label.text
     property alias textColor: label.color
     property alias textWidth: label.contentWidth
+    //property alias glowColor: effect.shadowColor
 
     signal clicked()
 
@@ -16,27 +17,46 @@ Rectangle {
 
     Layout.preferredWidth: label.contentWidth + 20
 
-    radius: 4
 
-    border.color: "black"
-    border.width: 0.5
+    Rectangle {
+        id: rectangle
 
-    color: tapHandler.pressed ? '#00CCCC' : hoverHandler.hovered ? '#00DDDD' : '#00FFFF'
+        anchors.fill: parent
 
-    Text {
-        id: label
-        anchors.centerIn: parent
+        radius: 4
 
-        text: 'none'
-        color: 'black'
+        border.color: "#006666"
+        border.width: 0.5
+
+        color: tapHandler.pressed ? '#00CCCC' : hoverHandler.hovered ? '#00DDDD' : '#00FFFF'
+
+        Text {
+            id: label
+            anchors.centerIn: parent
+
+            text: 'none'
+            color: 'black'
+        }
+
+        TapHandler {
+            id: tapHandler
+            onTapped: clicked()
+        }
+
+        HoverHandler {
+            id: hoverHandler
+        }
     }
 
-    TapHandler {
-        id: tapHandler
-        onTapped: clicked()
-    }
-
-    HoverHandler {
-        id: hoverHandler
-    }
+    // MultiEffect {
+    //     id: effect
+    //     source: rectangle
+    //     anchors.fill: rectangle
+    //     shadowEnabled: true
+    //     shadowBlur: 1.0
+    //     shadowColor: rectangle.color
+    //     shadowOpacity: 0.3
+    //     shadowVerticalOffset: 0
+    //     shadowHorizontalOffset: 0
+    // }
 }
