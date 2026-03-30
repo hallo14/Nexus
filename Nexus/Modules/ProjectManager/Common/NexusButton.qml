@@ -7,6 +7,7 @@ Rectangle {
 
     property alias text: label.text
     property alias textColor: label.color
+    property alias textWidth: label.contentWidth
 
     signal clicked()
 

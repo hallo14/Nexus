@@ -21,29 +21,28 @@ Rectangle {
         anchors.fill: parent
         spacing: 0
 
-        RowLayout {
+
+        Rectangle {
             Layout.fillWidth: true
-            Layout.maximumHeight: 30
-            spacing: 0
+            Layout.preferredHeight: 30
 
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            color: "#666"
 
-                color: "#666"
+            border.color: "#555"
+            border.width: 1
 
-                border.color: "#555"
-                border.width: 1
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
 
-                Button {
+                NexusButton {
+
+                    Layout.margins: 5
+
                     height: parent.height
+                    width: textWidth + 20
 
-                    contentItem: Text {
-                        verticalAlignment: Text.AlignVCenter
-                        text: "add Repo"
-                        color: "black"
-
-                    }
+                    text: "add repo"
 
                     onClicked: {
                         folderDialog.open()
@@ -58,10 +57,13 @@ Rectangle {
                     }
                 }
 
-                Button {
-                    anchors.right: parent.right
-                    height: parent.height
-                    width: parent.height
+                NexusButton {
+                    Layout.margins: 5
+                    Layout.alignment: Qt.AlignRight
+                    Layout.fillHeight: true
+                    Layout.preferredWidth: textWidth + 20
+
+                    text: "refresh"
 
                     onClicked: {
                         backend.fetchRepos()
