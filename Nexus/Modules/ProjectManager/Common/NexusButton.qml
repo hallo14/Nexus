@@ -6,6 +6,7 @@ import QtQuick.Effects
 Item {
 
     property alias text: label.text
+    property alias font: label.font
     property alias textColor: label.color
     property alias textWidth: label.contentWidth
     //property alias glowColor: effect.shadowColor

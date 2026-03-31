@@ -12,7 +12,7 @@ NexusRectangle {
     Layout.fillWidth: true
     Layout.margins: 10
 
-    color: "#333"
+    color: "#000"
     shadowColor: "#555"
     border.color: "transparent"
     border.width: 0

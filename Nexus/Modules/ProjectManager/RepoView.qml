@@ -64,10 +64,11 @@ NexusRectangle {
                     Layout.fillHeight: true
                     Layout.preferredWidth: textWidth + 20
 
-                    text: "refresh"
+                    text: "\u21BB"
+                    font.pixelSize: 16
 
                     onClicked: {
-                        backend.fetchRepos()
+                        backend.refreshRepos()
                     }
                 }
             }

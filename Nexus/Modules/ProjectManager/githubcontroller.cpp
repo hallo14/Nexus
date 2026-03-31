@@ -210,6 +210,10 @@ void GithubController::getReposFromConfig() {
 
     repoListChanged();
 }
+void GithubController::refreshRepos() {
+    m_repoList.clear();
+    getReposFromConfig();
+}
 
 void GithubController::fetchRepos() {
 
