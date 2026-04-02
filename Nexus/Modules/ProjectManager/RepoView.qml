@@ -81,31 +81,56 @@ NexusRectangle {
 
             model: backend.repoList
 
-            delegate: ItemDelegate {
-                id: repo
+            delegate: RowLayout {
+
                 width: projectlist.width
+                spacing: 0
 
-                contentItem: Text {
-                    text: modelData.name
-                    color: "black"
+                ItemDelegate {
+                    id: repo
 
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    Layout.fillWidth: true
 
+                    contentItem: Text {
+                        text: modelData.name
+                        color: "black"
+
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+
+                    }
+
+                    background: Rectangle {
+                        color: repo.down ? '#CCC' : '#EEE'
+                        border.color: '#444'
+                        border.width: 1
+
+                        anchors.fill: parent
+
+
+                        topLeftRadius: 4
+                        bottomLeftRadius: 4
+
+                        anchors.margins: 3
+                        anchors.rightMargin: 0
+                    }
+
+                    onClicked: backend.selectedIndex = model.index
                 }
 
-                background: Rectangle {
-                    color: repo.down ? '#CCC' : '#EEE'
-                    border.color: '#444'
-                    border.width: 1
+                NexusButton {
+                    text: "x"
 
-                    anchors.fill: parent
-                    anchors.margins: 3
+                    Layout.preferredWidth: 30
 
-                    radius: 4
+                    rect.topLeftRadius: 0
+                    rect.bottomLeftRadius: 0
+
+                    Layout.margins: 3
+                    Layout.leftMargin: 0
+
+                    onClicked: backend.removeLocalRepo(model.index, modelData.name)
                 }
-
-                onClicked: backend.selectedIndex = model.index
             }
         }
     }

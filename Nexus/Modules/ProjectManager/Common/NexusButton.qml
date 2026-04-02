@@ -9,6 +9,7 @@ Item {
     property alias font: label.font
     property alias textColor: label.color
     property alias textWidth: label.contentWidth
+    property alias rect: rectangle
     //property alias glowColor: effect.shadowColor
 
     signal clicked()

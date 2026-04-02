@@ -22,51 +22,74 @@ Rectangle {
 
         model: Object.keys(backend.selectedRepo.commands)
 
-        delegate: ItemDelegate {
-            id: repoCommand
+        delegate: RowLayout {
+
             width: commandList.width
+            spacing: 0
+
+            ItemDelegate {
+                id: repoCommand
+                Layout.fillWidth: true
 
 
-            contentItem: Column {
+                contentItem: Column {
 
-                Text {
-                    text: modelData
-                    font.bold: true
-                    color: "black"
+                    Text {
+                        text: modelData
+                        font.bold: true
+                        color: "black"
+                    }
+                    Text {
+                        text: backend.selectedRepo.commands[modelData]
+                        color: "#666"
+                    }
                 }
-                Text {
-                    text: backend.selectedRepo.commands[modelData]
-                    color: "#666"
+
+
+
+                background: Rectangle {
+                    color: repoCommand.down ? '#CCC' : '#EEE'
+                    border.color: '#444'
+                    border.width: 1
+
+                    anchors.fill: parent
+
+                    topLeftRadius: 4
+                    bottomLeftRadius: 4
+
+                    anchors.margins: 3
+                    anchors.rightMargin: 0
                 }
+
+                CommandContextMenu {
+                    id: contextMenu
+                    y: repoCommand.height
+
+                    MenuItem {
+                        text: "execute"
+                        onTriggered: backend.executeCommand(backend.selectedRepo.commands[modelData])
+                    }
+                    MenuItem {
+                        text: "delete"
+                    }
+                }
+
+                onClicked: contextMenu.open()
             }
 
+            NexusButton {
+                Layout.preferredWidth: 30
 
+                text: "X"
 
-            background: Rectangle {
-                color: repoCommand.down ? '#CCC' : '#EEE'
-                border.color: '#444'
-                border.width: 1
+                rect.topLeftRadius: 0
+                rect.bottomLeftRadius: 0
 
-                anchors.fill: parent
-                anchors.margins: 3
+                Layout.margins: 3
+                Layout.leftMargin: 0
 
-                radius: 4
+                onClicked: backend.removeCommand(modelData)
             }
-
-            CommandContextMenu {
-                id: contextMenu
-                y: repoCommand.height
-
-                MenuItem {
-                    text: "execute"
-                    onTriggered: backend.executeCommand(backend.selectedRepo.commands[modelData])
-                }
-                MenuItem {
-                    text: "delete"
-                }
-            }
-
-            onClicked: contextMenu.open()
         }
     }
 }
