@@ -49,6 +49,7 @@ NexusRectangle {
 
                 NexusButton {
                     text: "add command"
+                    Layout.preferredWidth: 90
 
                     CommandDialog {
                         id: commandDialog

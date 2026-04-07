@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Nexus VERSION 0.1 LANGUAGES CXX)
 
+set(QT_USE_QMLCACHE ON CACHE BOOL "Enable QML caching" FORCE)
+
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
@@ -19,6 +21,7 @@ qt_add_qml_module(appNexus
     URI Nexus
     QML_FILES
         Main.qml
+        QML_FILES Nexus.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -44,4 +47,16 @@ target_link_libraries(appNexus
         Qt6::Quick
         ProjectManager
         Vault
+)
+
+qt_generate_deploy_qml_app_script(
+    TARGET appNexus
+    OUTPUT_SCRIPT deploy_script
+)
+
+install(SCRIPT ${deploy_script})
+
+add_custom_command(TARGET appNexus POST_BUILD
+    COMMAND ${CMAKE_COMMAND} --install . --config $<CONFIG> --prefix "${CMAKE_BINARY_DIR}/deploy"
+    COMMENT "Auto-deploying appNexus to ${CMAKE_BINARY_DIR}/deploy..."
 )
