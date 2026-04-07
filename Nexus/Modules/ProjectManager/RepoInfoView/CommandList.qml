@@ -31,15 +31,14 @@ Rectangle {
                 id: repoCommand
                 Layout.fillWidth: true
 
-
                 contentItem: Column {
 
-                    Text {
+                    NexusText {
                         text: modelData
                         font.bold: true
                         color: "black"
                     }
-                    Text {
+                    NexusText {
                         text: backend.selectedRepo.commands[modelData]
                         color: "#666"
                     }
@@ -74,13 +73,39 @@ Rectangle {
                     }
                 }
 
-                onClicked: contextMenu.open()
+                onClicked: backend.executeCommand(backend.selectedRepo.commands[modelData])
             }
 
             NexusButton {
                 Layout.preferredWidth: 30
 
-                text: "X"
+                text: "\u270E"
+                rect.color: pressed ? '#FFA000' : hovered ? '#FFB300' : '#FFC107'
+                font.pixelSize: 16
+                textRotation: 100
+
+                rect.radius: 0
+
+                Layout.margins: 3
+                Layout.leftMargin: 0
+                Layout.rightMargin: 0
+
+                CommandDialog {
+                    id: commandDialog
+                    name: modelData
+                    command: backend.selectedRepo.commands[modelData]
+                    onAccepted: backend.addCommand(name, command)
+                }
+
+                onClicked: commandDialog.open()
+            }
+
+            NexusButton {
+                Layout.preferredWidth: 30
+
+                text: "\u00D7"
+                rect.color: pressed ? '#880E4F' : hovered ? '#B71C1C' : '#D32F2F'
+                font.pixelSize: 16
 
                 rect.topLeftRadius: 0
                 rect.bottomLeftRadius: 0

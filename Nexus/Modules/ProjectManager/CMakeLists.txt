@@ -16,6 +16,7 @@ qt_add_qml_module(ProjectManager
         QML_FILES Popups/CommandDialog.qml
         QML_FILES Popups/CommandContextMenu.qml
         QML_FILES Common/NexusRectangle.qml
+        QML_FILES Common/NexusText.qml
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Gui Network QuickEffects)

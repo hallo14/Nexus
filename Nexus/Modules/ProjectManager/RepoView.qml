@@ -40,8 +40,8 @@ NexusRectangle {
 
                     Layout.margins: 5
 
-                    height: parent.height
-                    width: textWidth + 20
+
+                    Layout.preferredWidth: 60
 
                     text: "add repo"
 
@@ -120,6 +120,7 @@ NexusRectangle {
 
                 NexusButton {
                     text: "x"
+                    rect.color: pressed ? '#880E4F' : hovered ? '#B71C1C' : '#D32F2F'
 
                     Layout.preferredWidth: 30
 

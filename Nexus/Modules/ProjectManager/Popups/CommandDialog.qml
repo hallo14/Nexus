@@ -9,8 +9,8 @@ Dialog {
     modal: true
     standardButtons: Dialog.Ok | Dialog.Cancel
 
-    readonly property alias name: nameInput.text
-    readonly property alias command: commandInput.text
+    property alias name: nameInput.text
+    property alias command: commandInput.text
 
     ColumnLayout {
 

@@ -9,7 +9,10 @@ Item {
     property alias font: label.font
     property alias textColor: label.color
     property alias textWidth: label.contentWidth
+    property alias textRotation: label.rotation
     property alias rect: rectangle
+    readonly property alias pressed: tapHandler.pressed
+    readonly property alias hovered: hoverHandler.hovered
     //property alias glowColor: effect.shadowColor
 
     signal clicked()
@@ -17,7 +20,7 @@ Item {
     Layout.fillHeight: true
     Layout.alignment: Qt.AlignVCenter
 
-    Layout.preferredWidth: label.contentWidth + 20
+    //Layout.preferredWidth: label.contentWidth + 20
 
 
     Rectangle {
@@ -32,12 +35,11 @@ Item {
 
         color: tapHandler.pressed ? '#00CCCC' : hoverHandler.hovered ? '#00DDDD' : '#00FFFF'
 
-        Text {
+        NexusText {
             id: label
-            anchors.centerIn: parent
-
-            text: 'none'
-            color: 'black'
+            anchors.fill: parent
+            textVAlign: Text.AlignVCenter
+            textHAlign: Text.AlignHCenter
         }
 
         TapHandler {
