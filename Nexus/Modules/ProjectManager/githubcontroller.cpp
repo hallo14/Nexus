@@ -39,10 +39,14 @@ void GithubController::setSelectedIndex(int idx) {
     selectedIndexChanged();
     selectedRepoChanged();
 }
-void GithubController::addCommand(QString name, QString command) {
+void GithubController::addCommand(QString name, QVariantList commands) {
     if (m_selectedIndex < 0 || m_selectedIndex >= m_repoList.size()) return;
-    addCommandToConfig(m_repoList[m_selectedIndex].name, name, command);
-    m_repoList[m_selectedIndex].commands[name] = command;
+    QStringList commandList;
+    for (QVariant variant : commands) {
+        commandList.append(variant.toString());
+    }
+    addCommandToConfig(m_repoList[m_selectedIndex].name, name, commandList);
+    m_repoList[m_selectedIndex].commands[name] = commandList;
     selectedRepoChanged();
 }
 void GithubController::removeCommand(QString name) {
@@ -51,19 +55,22 @@ void GithubController::removeCommand(QString name) {
     m_repoList[m_selectedIndex].commands.remove(name);
     selectedRepoChanged();
 }
-void GithubController::executeCommand(QString command) {
-    if (command.isEmpty()) return;
+void GithubController::executeCommand(QVariantList commands) {
+    for (QVariant& variant : commands) {
+        QString command = variant.toString();
+        if (command.isEmpty()) return;
 
-    QString workingDir = m_repoList[m_selectedIndex].localPath;
-    QString nativePath = QDir::toNativeSeparators(workingDir);
+        QString workingDir = m_repoList[m_selectedIndex].localPath;
+        QString nativePath = QDir::toNativeSeparators(workingDir);
 
-    command.replace("%ProjectDir%", nativePath);
+        command.replace("%ProjectDir%", nativePath);
 
-    qDebug() << command;
-    QStringList args;
-    args << "/c" << command;
+        qDebug() << command;
+        QStringList args;
+        args << "/c" << command;
 
-    QProcess::startDetached("cmd.exe", args, nativePath);
+        QProcess::startDetached("cmd.exe", args, nativePath);
+    }
 
 }
 void GithubController::copyToClipboard(QString text) {
@@ -187,7 +194,7 @@ bool GithubController::removeRepoFromConfig(QString repoName) {
 
     return true;
 }
-void GithubController::addCommandToConfig(QString repoName, QString commandName, QString command) {
+void GithubController::addCommandToConfig(QString repoName, QString commandName, QStringList commandList) {
     QFile file("config/config.json");
 
     QDir dir("config/");
@@ -211,7 +218,7 @@ void GithubController::addCommandToConfig(QString repoName, QString commandName,
     QJsonObject commands;
     commands = repo["commands"].toObject();
 
-    commands[commandName] = command;
+    commands[commandName] = QJsonArray::fromStringList(commandList);
 
     repo["commands"] = commands;
     repos[repoName] = repo;
@@ -279,8 +286,9 @@ void GithubController::getReposFromConfig() {
 
         QJsonObject cObject = repoData["commands"].toObject();
         QStringList cKeys = cObject.keys();
+        QStringList commands;
         for (QString cKey : cKeys) {
-            repo.commands[cKey] = cObject[cKey].toString();
+            repo.commands[cKey] = cObject[cKey].toArray().toVariantList();
         }
 
         m_repoList.append(repo);

@@ -53,10 +53,13 @@ NexusRectangle {
 
                     CommandDialog {
                         id: commandDialog
-                        onAccepted: backend.addCommand(name, command)
+                        onAccepted: backend.addCommand(name, commands())
                     }
 
-                    onClicked: commandDialog.open()
+                    onClicked: {
+                        commandDialog.clear()
+                        commandDialog.open()
+                    }
                 }
             }
         }

@@ -84,7 +84,7 @@ NexusRectangle {
             delegate: RowLayout {
 
                 width: projectlist.width
-                spacing: 0
+                spacing: -1
 
                 ItemDelegate {
                     id: repo
@@ -123,12 +123,15 @@ NexusRectangle {
                     rect.color: pressed ? '#880E4F' : hovered ? '#B71C1C' : '#D32F2F'
 
                     Layout.preferredWidth: 30
+                    Layout.margins: 3
+                    Layout.leftMargin: 0
 
                     rect.topLeftRadius: 0
                     rect.bottomLeftRadius: 0
 
-                    Layout.margins: 3
-                    Layout.leftMargin: 0
+                    rect.border.color: '#444'
+                    rect.border.width: 1
+
 
                     onClicked: backend.removeLocalRepo(model.index, modelData.name)
                 }

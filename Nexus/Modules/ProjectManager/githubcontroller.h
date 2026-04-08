@@ -58,10 +58,10 @@ public:
     GithubRepo selectedRepo();
     int selectedIndex();
     void setSelectedIndex(int idx);
-    Q_INVOKABLE void executeCommand(QString command);
+    Q_INVOKABLE void executeCommand(QVariantList commands);
     bool addRepoToConfig(GithubRepo repo);
     bool removeRepoFromConfig(QString repoName);
-    void addCommandToConfig(QString repoName, QString commandName, QString command);
+    void addCommandToConfig(QString repoName, QString commandName, QStringList commandList);
     void removeCommandFromConfig(QString repoName, QString commandName);
     void getReposFromConfig();
     Q_INVOKABLE void refreshRepos();
@@ -70,7 +70,7 @@ public:
     Q_INVOKABLE void requestCode();
     void fetchAccessToken();
 
-    Q_INVOKABLE void addCommand(QString name, QString command);
+    Q_INVOKABLE void addCommand(QString name, QVariantList commands);
     Q_INVOKABLE void removeCommand(QString name);
 
     Q_INVOKABLE void addLocalRepo(QString start);

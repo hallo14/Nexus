@@ -22,7 +22,6 @@ Item {
 
     //Layout.preferredWidth: label.contentWidth + 20
 
-
     Rectangle {
         id: rectangle
 

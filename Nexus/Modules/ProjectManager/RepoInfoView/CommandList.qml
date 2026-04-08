@@ -25,7 +25,7 @@ Rectangle {
         delegate: RowLayout {
 
             width: commandList.width
-            spacing: 0
+            spacing: -1
 
             ItemDelegate {
                 id: repoCommand
@@ -39,7 +39,7 @@ Rectangle {
                         color: "black"
                     }
                     NexusText {
-                        text: backend.selectedRepo.commands[modelData]
+                        text: backend.selectedRepo.commands[modelData][0]
                         color: "#666"
                     }
                 }
@@ -86,18 +86,25 @@ Rectangle {
 
                 rect.radius: 0
 
+                rect.border.color: '#444'
+                rect.border.width: 1
+
                 Layout.margins: 3
                 Layout.leftMargin: 0
                 Layout.rightMargin: 0
 
                 CommandDialog {
                     id: commandDialog
-                    name: modelData
-                    command: backend.selectedRepo.commands[modelData]
-                    onAccepted: backend.addCommand(name, command)
+                    onAccepted: {
+                        backend.addCommand(name, command)
+                    }
                 }
 
-                onClicked: commandDialog.open()
+                onClicked: {
+                    commandDialog.name = modelData
+                    commandDialog.loadCommands(backend.selectedRepo.commands[modelData])
+                    commandDialog.open()
+                }
             }
 
             NexusButton {
@@ -109,6 +116,9 @@ Rectangle {
 
                 rect.topLeftRadius: 0
                 rect.bottomLeftRadius: 0
+
+                rect.border.color: '#444'
+                rect.border.width: 1
 
                 Layout.margins: 3
                 Layout.leftMargin: 0
