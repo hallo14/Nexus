@@ -3,9 +3,9 @@
 ⚖️ License & Open Source Compliance
 This project is open-source and is provided to the community for free.
 
-Project License: This project is licensed under the [Insert your choice, e.g., MIT or GPLv3] License - see the LICENSE file for details.
+Project License: This project is licensed under the MIT License - see the LICENSE file for details.
 
-Qt Framework: This software uses the Qt Framework (version [Insert your Qt version, e.g., 6.6.0]) under the terms of the GNU Lesser General Public License (LGPL) version 3.
+Qt Framework: This software uses the Qt Framework (version 6.8) under the terms of the GNU Lesser General Public License (LGPL) version 3.
 
 The Qt Toolkit is Copyright (C) The Qt Company Ltd. and other contributors.
 
