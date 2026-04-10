@@ -39,7 +39,7 @@ private:
     QNetworkAccessManager* m_manager;
 
     QList<GithubRepo> m_repoList;
-    int m_selectedIndex;
+    int m_selectedIndex = -1;
 
     QTimer* m_timer;
     QString m_deviceCode;

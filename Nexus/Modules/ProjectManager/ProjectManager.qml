@@ -48,6 +48,7 @@ Item {
 
                 RepoInfoView {
                     backend: backend
+                    visible: backend.selectedIndex !== -1
                 }
 
             }

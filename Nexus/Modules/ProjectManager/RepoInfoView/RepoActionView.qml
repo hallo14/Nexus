@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls 2.15
+import Modules.ProjectManager 1.0
 
 Rectangle {
     SplitView.fillHeight: true
@@ -28,17 +29,40 @@ Rectangle {
             SplitView.preferredHeight: parent.height * 0.4
             spacing: -1
 
-            TextArea {
+            Terminal {
+                id: terminal
+                dir: backend.selectedRepo.localPath
+            }
+            ScrollView {
+                id: terminalScroll
+
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                readOnly: true
-                text: "Hallo\nHallo"
+
+                ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+
+                TextArea {
+                    width: ScrollView.availableWidth
+                    height: ScrollView.availableHeight
+                    readOnly: true
+                    text: terminal.buffer
+                    wrapMode: Text.Wrap
+                    font.family: "monospace"
+                    onTextChanged: {
+                            cursorPosition = text.length
+                    }
+                }
             }
 
             TextField {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 30
                 placeholderText: "Command..."
+                onTextChanged: terminal.command = text
+                onAccepted: {
+                    terminal.executeCommand()
+                    text = ""
+                }
             }
         }
     }

@@ -5,6 +5,8 @@ qt_add_qml_module(ProjectManager
     SOURCES
         githubcontroller.cpp
         githubcontroller.h
+        terminal.cpp
+        terminal.h
     QML_FILES
         ProjectManager.qml
         QML_FILES TopBar.qml
@@ -18,8 +20,7 @@ qt_add_qml_module(ProjectManager
         QML_FILES Common/NexusRectangle.qml
         QML_FILES Common/NexusText.qml
         QML_FILES RepoInfoView/RepoActionView.qml
-        SOURCES terminal.h
-        SOURCES terminal.cpp
+
 )
 
 find_package(Qt6 REQUIRED COMPONENTS Gui Network QuickEffects)
