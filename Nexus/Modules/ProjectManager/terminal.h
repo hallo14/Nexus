@@ -15,6 +15,7 @@ class Terminal : public QObject {
     Q_PROPERTY(QString buffer READ buffer NOTIFY bufferChanged)
     Q_PROPERTY(QString command READ command WRITE setCommand NOTIFY commandChanged)
     Q_PROPERTY(QString dir READ dir WRITE setDir NOTIFY dirChanged)
+    Q_PROPERTY(bool processRunning READ processRunning NOTIFY processRunningChanged)
 
 
 private:
@@ -22,6 +23,7 @@ private:
     QString m_command;
     QString m_dir;
     QProcess* m_process;
+    bool m_processRunning = false;
 
 public:
     explicit Terminal(QObject* parent = nullptr);
@@ -30,16 +32,19 @@ public:
     QString buffer();
     QString command();
     QString dir();
+    bool processRunning();
 
     void setCommand(QString command);
     void setDir(QString dir);
 
     Q_INVOKABLE void executeCommand();
+    Q_INVOKABLE void stopCommand();
 
 
 signals:
     void bufferChanged();
     void commandChanged();
     void dirChanged();
+    void processRunningChanged();
 
 };
