@@ -53,7 +53,6 @@ Item {
             }
         }
     }
-
     function showPopup(sourceFile, properties) {
         popupLoader.active = true
         popupLoader.setSource(sourceFile, properties)

@@ -8,8 +8,8 @@ Rectangle {
 
     required property GithubController backend
 
-    Layout.fillHeight: true
-    Layout.preferredWidth: root.width * 0.3
+    SplitView.fillHeight: true
+    SplitView.preferredWidth: root.width * 0.3
 
     color: "#999"
 
@@ -96,7 +96,7 @@ Rectangle {
                 CommandDialog {
                     id: commandDialog
                     onAccepted: {
-                        backend.addCommand(name, command)
+                        backend.addCommand(name, commands())
                     }
                 }
 

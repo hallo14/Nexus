@@ -64,19 +64,17 @@ NexusRectangle {
             }
         }
 
-        RowLayout {
+        SplitView {
             Layout.fillHeight: true
             Layout.fillWidth: true
-            spacing: 0
+            spacing: -1
+            handle: Rectangle {
+                implicitWidth: 2
+                color: "#666"
+            }
 
-            Rectangle {
-                Layout.fillHeight: true
-                Layout.fillWidth: true
+            RepoActionView {
 
-                color: "#999"
-
-                border.color: "#555"
-                border.width: 1
             }
 
             CommandList {
