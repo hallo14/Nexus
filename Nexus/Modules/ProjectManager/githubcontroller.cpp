@@ -65,7 +65,6 @@ void GithubController::executeCommand(QVariantList commands) {
 
         command.replace("%ProjectDir%", nativePath);
 
-        qDebug() << command;
         QStringList args;
         args << "/c" << command;
 

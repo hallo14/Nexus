@@ -12,6 +12,8 @@ Rectangle {
     border.color: "#555"
     border.width: 1
 
+    property var currentTerminal: terminalRepeater.itemAt(backend.selectedIndex)
+
     SplitView {
         anchors.fill: parent
         orientation: Qt.Vertical
@@ -29,59 +31,82 @@ Rectangle {
             SplitView.preferredHeight: parent.height * 0.4
             spacing: -1
 
-            Terminal {
-                id: terminal
-                dir: backend.selectedRepo.localPath
-            }
-            ScrollView {
-                id: terminalScroll
-
+            StackLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                currentIndex: backend.selectedIndex
 
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+                Repeater {
+                    id: terminalRepeater
+                    model: backend.repoList
 
-                TextArea {
-                    id: terminalArea
-                    width: ScrollView.availableWidth
-                    height: ScrollView.availableHeight
-                    readOnly: true
-                    text: terminal.buffer
-                    color: "white"
-                    wrapMode: Text.Wrap
-                    font.family: "monospace"
-                    onTextChanged: {
-                            cursorPosition = text.length
-                    }
-                    background: Rectangle {
-                        color: "black"
-                        border.color: "gray"
-                        border.width: 1
-                    }
+                    delegate: ColumnLayout {
+                        spacing: -1
 
-                    Shortcut {
-                        sequences: [ StandardKey.Copy ]
-                        onActivated: {
-                            if (terminalArea.selectedText === "") {
-                                terminal.stopCommand();
-                            } else {
-                                terminalArea.copy();
+                        Terminal {
+                            id: terminal
+                            dir: modelData.localPath
+                        }
+
+                        ScrollView {
+                            id: terminalScroll
+
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+
+                            ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+
+                            TextArea {
+                                id: terminalArea
+                                width: ScrollView.availableWidth
+                                height: ScrollView.availableHeight
+                                readOnly: true
+                                text: terminal.buffer
+                                color: "white"
+                                wrapMode: Text.Wrap
+                                font.family: "monospace"
+                                onTextChanged: {
+                                        cursorPosition = text.length
+                                }
+                                background: Rectangle {
+                                    color: "black"
+                                    border.color: "black"
+                                    border.width: 1
+                                }
+
+                                Shortcut {
+                                    sequences: [ StandardKey.Copy ]
+                                    enabled: index === backend.selectedIndex
+                                    onActivated: {
+                                        if (terminalArea.selectedText === "") {
+                                            terminal.stopCommand();
+                                        } else {
+                                            terminalArea.copy();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        TextField {
+                            id: terminalInput
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 30
+                            placeholderText: "Command..."
+                            placeholderTextColor: "gray"
+                            enabled: terminal ? !terminal.processRunning : false
+                            onTextChanged: terminal.command = text
+                            onAccepted: {
+                                terminal.executeCommand()
+                                text = ""
+                            }
+                            background: Rectangle {
+                                color: enabled ? "white" : "gray"
+                                border.color: "black"
+                                border.width: 1
                             }
                         }
                     }
-                }
-            }
-
-            TextField {
-                id: terminalInput
-                Layout.fillWidth: true
-                Layout.preferredHeight: 30
-                placeholderText: "Command..."
-                enabled: terminal ? !terminal.processRunning : false
-                onTextChanged: terminal.command = text
-                onAccepted: {
-                    terminal.executeCommand()
-                    text = ""
                 }
             }
         }

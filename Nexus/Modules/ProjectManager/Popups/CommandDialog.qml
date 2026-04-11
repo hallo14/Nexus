@@ -6,8 +6,8 @@ Dialog {
     id: commandDialog
     title: "New Command"
     anchors.centerIn: Overlay.overlay
-    width: Overlay.overlay.width * 0.6
-    height: Overlay.overlay.height * 0.6
+    width: Overlay.overlay?.width * 0.6
+    height: Overlay.overlay?.height * 0.6
     modal: true
     standardButtons: Dialog.Ok | Dialog.Cancel
 
