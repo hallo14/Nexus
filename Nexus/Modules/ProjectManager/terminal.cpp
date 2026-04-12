@@ -10,7 +10,7 @@ QString Terminal::buffer()
 
 QString Terminal::command()
 {
-    return m_command;
+    return m_commandList[m_commandIndex];
 }
 
 QString Terminal::dir()
@@ -25,7 +25,7 @@ bool Terminal::processRunning()
 
 void Terminal::setCommand(QString command)
 {
-    m_command = command;
+    m_commandList[m_commandIndex] = command;
     emit commandChanged();
 }
 
@@ -39,8 +39,17 @@ void Terminal::executeCommand()
 {
     stopCommand();
     m_process->setWorkingDirectory(m_dir);
-    m_process->startCommand("cmd /c " + m_command);
+    m_process->startCommand("cmd /c " + command());
+
+    m_buffer += m_dir.split('/').last() + "> " + command() + '\n';
+
+    if (m_commandList[0] != "") {
+        m_commandList.emplaceFront("");
+    }
+    m_commandIndex = 0;
+
     m_processRunning = true;
+    emit bufferChanged();
     emit processRunningChanged();
 }
 
@@ -49,6 +58,13 @@ void Terminal::stopCommand()
     if (!m_process || m_process->state() == QProcess::NotRunning) return;
 
     QProcess::startDetached("taskkill", {"/f", "/t", "/pid", QString::number(m_process->processId())});
+}
+
+void Terminal::incrementIndex(int idx)
+{
+    if (m_commandIndex + idx >= m_commandList.size() || m_commandIndex + idx < 0) return;
+    m_commandIndex += idx;
+    emit commandChanged();
 }
 
 Terminal::Terminal(QObject* parent) : QObject(parent) {

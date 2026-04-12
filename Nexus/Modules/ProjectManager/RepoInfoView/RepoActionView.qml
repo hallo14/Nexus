@@ -95,15 +95,34 @@ Rectangle {
                             placeholderText: "Command..."
                             placeholderTextColor: "gray"
                             enabled: terminal ? !terminal.processRunning : false
-                            onTextChanged: terminal.command = text
+
+
+                            onTextEdited: terminal.command = text
                             onAccepted: {
                                 terminal.executeCommand()
                                 text = ""
                             }
+                            Keys.onPressed: (event) => {
+                                if (event.key === Qt.Key_Up) {
+                                    terminal.incrementIndex(1);
+                                    event.accepted = true;
+                                }
+                                else if (event.key === Qt.Key_Down) {
+                                    terminal.incrementIndex(-1);
+                                    event.accepted = true;
+                                }
+                            }
+
                             background: Rectangle {
                                 color: enabled ? "white" : "gray"
                                 border.color: "black"
                                 border.width: 1
+                            }
+
+                            Binding {
+                                target: terminalInput
+                                property: "text"
+                                value: terminal.command
                             }
                         }
                     }

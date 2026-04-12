@@ -20,7 +20,8 @@ class Terminal : public QObject {
 
 private:
     QString m_buffer;
-    QString m_command;
+    QStringList m_commandList = {""};
+    int m_commandIndex = 0;
     QString m_dir;
     QProcess* m_process;
     bool m_processRunning = false;
@@ -39,6 +40,7 @@ public:
 
     Q_INVOKABLE void executeCommand();
     Q_INVOKABLE void stopCommand();
+    Q_INVOKABLE void incrementIndex(int idx = 1);
 
 
 signals:
