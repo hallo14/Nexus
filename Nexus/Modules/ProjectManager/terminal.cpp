@@ -67,6 +67,18 @@ void Terminal::incrementIndex(int idx)
     emit commandChanged();
 }
 
+void Terminal::printStartupMessage()
+{
+    QString message = {
+        "[PROJECT] " + m_dir.split('/').last() + "\n"
+        "[ROOT]      " + m_dir + "\n"
+        "[TYPE]      Ready for input...\n"
+    };
+
+    m_buffer.append(message);
+    emit bufferChanged();
+}
+
 Terminal::Terminal(QObject* parent) : QObject(parent) {
     m_process = new QProcess(this);
 

@@ -46,6 +46,8 @@ Rectangle {
                         Terminal {
                             id: terminal
                             dir: modelData.localPath
+
+                            Component.onCompleted: terminal.printStartupMessage()
                         }
 
                         ScrollView {

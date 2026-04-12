@@ -42,6 +42,8 @@ public:
     Q_INVOKABLE void stopCommand();
     Q_INVOKABLE void incrementIndex(int idx = 1);
 
+    Q_INVOKABLE void printStartupMessage();
+
 
 signals:
     void bufferChanged();
