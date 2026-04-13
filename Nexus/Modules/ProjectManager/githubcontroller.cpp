@@ -81,7 +81,16 @@ void GithubController::addLocalRepo(QString urlString) {
     QString path = url.toLocalFile();
 
     QDir dir(path);
-    if (!dir.exists(".git")) return;
+    if (!dir.exists(".git")) {
+        GithubRepo repo;
+        repo.name = dir.path().split('/').last();
+        repo.localPath = dir.path();
+        addRepoToConfig(repo);
+        m_repoList.append(repo);
+        repoListChanged();
+        selectedRepoChanged();
+        return;
+    }
 
     dir.cd(".git");
 
