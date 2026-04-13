@@ -27,7 +27,7 @@ private:
     QProcess* m_process;
     bool m_processRunning = false;
 
-    typedef void (Terminal::*LocalCommandFunc)(QString cmd);
+    typedef void (Terminal::*LocalCommandFunc)();
     QMap<QString, LocalCommandFunc> m_localCommands;
 
 public:
@@ -42,15 +42,13 @@ public:
     void setCommand(QString command);
     void setDir(QString dir);
 
-    void executeCommand(QString cmd);
-    Q_INVOKABLE void prepareCommand();
+    Q_INVOKABLE void executeCommand();
     Q_INVOKABLE void stopCommand();
     Q_INVOKABLE void incrementIndex(int idx = 1);
 
     Q_INVOKABLE void printStartupMessage();
 
-    void handleCls(QString cmd);
-    void handleCd(QString cmd);
+    void handleCls();
 
 
 signals:

@@ -101,7 +101,7 @@ Rectangle {
 
                             onTextEdited: terminal.command = text
                             onAccepted: {
-                                terminal.executeCommand()
+                                terminal.prepareCommand()
                                 text = ""
                             }
                             Keys.onPressed: (event) => {
