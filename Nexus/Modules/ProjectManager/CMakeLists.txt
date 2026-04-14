@@ -20,6 +20,8 @@ qt_add_qml_module(ProjectManager
         QML_FILES Common/NexusRectangle.qml
         QML_FILES Common/NexusText.qml
         QML_FILES RepoInfoView/RepoActionView.qml
+        QML_FILES Common/NexusTerminal.qml
+        QML_FILES Common/NexusTerminalWrapper.qml
 
 )
 
