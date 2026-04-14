@@ -11,7 +11,7 @@ ColumnLayout {
 
     ListModel {
         id: listModel
-        Component.onCompleted: listModel.append({"terminal":""})
+        Component.onCompleted: listModel.append({"":""})
     }
 
     TabBar {
@@ -24,16 +24,23 @@ ColumnLayout {
         Repeater{
             model: listModel
             delegate: TabButton {
-                height: parent.height
-                background: Rectangle {
-                    color: "green"
-                    border.width: 1
-                    border.color: "black"
+                background: NexusButton {
+                    rect.radius: 0
+                    rect.color: "green"
+                    rect.border.width: 1
+                    rect.border.color: "black"
+                    text: "Terminal" + (index+1)
                 }
             }
         }
 
-        TabButton {}
+        TabButton {
+            text: "+"
+            onClicked: {
+                listModel.append({"":""})
+                tabBar.setCurrentIndex(tabBar.count-2)
+            }
+        }
     }
 
 
@@ -44,7 +51,10 @@ ColumnLayout {
         Repeater {
             model: listModel
             delegate: NexusTerminal {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 dir: terminalWrapper.dir
+                Component.onCompleted: tabBar.setCurrentIndex(0)
             }
         }
     }

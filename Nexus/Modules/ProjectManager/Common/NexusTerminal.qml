@@ -4,7 +4,6 @@ import QtQuick.Controls
 import Modules.ProjectManager 1.0
 
 ColumnLayout {
-    anchors.fill: parent
     spacing: -1
 
     property alias dir: terminal.dir
