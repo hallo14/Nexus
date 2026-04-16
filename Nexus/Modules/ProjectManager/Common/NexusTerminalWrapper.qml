@@ -4,8 +4,7 @@ import QtQuick.Layouts
 
 ColumnLayout {
     id: terminalWrapper
-    anchors.fill: parent
-    spacing: -1
+    spacing: 0
 
     property var dir
 
@@ -14,31 +13,38 @@ ColumnLayout {
         Component.onCompleted: listModel.append({"":""})
     }
 
-    TabBar {
-        id: tabBar
+    RowLayout {
         Layout.fillWidth: true
-        Layout.minimumHeight: 20
         Layout.preferredHeight: terminalWrapper.height * 0.1
         spacing: -1
 
-        Repeater{
-            model: listModel
-            delegate: TabButton {
-                background: NexusButton {
-                    rect.radius: 0
-                    rect.color: "green"
-                    rect.border.width: 1
-                    rect.border.color: "black"
-                    text: "Terminal" + (index+1)
+        TabBar {
+            id: tabBar
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            spacing: -1
+
+            Repeater{
+                model: listModel
+                delegate: TabButton {
+                    background: NexusButton {
+                        rect.radius: 0
+                        rect.color: "green"
+                        rect.border.width: 1
+                        rect.border.color: "black"
+                        text: "Terminal" + (index+1)
+                    }
                 }
             }
-        }
 
-        TabButton {
+        }
+        Button {
             text: "+"
+            Layout.preferredWidth: 40
+            Layout.fillHeight: true
             onClicked: {
                 listModel.append({"":""})
-                tabBar.setCurrentIndex(tabBar.count-2)
+                tabBar.setCurrentIndex(tabBar.count-1)
             }
         }
     }

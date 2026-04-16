@@ -29,6 +29,7 @@ Rectangle {
 
         ColumnLayout {
             SplitView.preferredHeight: parent.height * 0.4
+            SplitView.preferredWidth: parent.width
             spacing: -1
 
             StackLayout {
@@ -45,6 +46,7 @@ Rectangle {
                         Layout.fillWidth: true
                         NexusTerminalWrapper {
                             dir: modelData.localPath
+                            anchors.fill: parent
                         }
                     }
                 }
