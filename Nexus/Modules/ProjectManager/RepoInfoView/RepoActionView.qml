@@ -27,27 +27,22 @@ Rectangle {
             color: "transparent"
         }
 
-        ColumnLayout {
-            SplitView.preferredHeight: parent.height * 0.4
+        StackLayout {
+            SplitView.preferredHeight: parent.height * 0.5
             SplitView.preferredWidth: parent.width
-            spacing: -1
 
-            StackLayout {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                currentIndex: backend.selectedIndex
+            currentIndex: backend.selectedIndex
 
-                Repeater {
-                    id: terminalRepeater
-                    model: backend.repoList
+            Repeater {
+                id: terminalRepeater
+                model: backend.repoList
 
-                    delegate: Item {
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        NexusTerminalWrapper {
-                            dir: modelData.localPath
-                            anchors.fill: parent
-                        }
+                delegate: Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    NexusTerminalWrapper {
+                        dir: modelData.localPath
+                        anchors.fill: parent
                     }
                 }
             }

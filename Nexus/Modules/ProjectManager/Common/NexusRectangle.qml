@@ -8,6 +8,7 @@ Item {
     property alias color: rectangle.color
     property alias border: rectangle.border
     property alias shadowColor: effect.shadowColor
+    property alias effect: effect
 
     Rectangle {
         id: rectangle
